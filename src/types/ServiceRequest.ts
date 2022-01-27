@@ -4,6 +4,6 @@ export default interface IServiceRequestData {
     categoryId:string | null,
     serviceId:string | null,
     modeOfPay:string | null,
-    startDate:Date  | null,
-    endDate:Date | null
+    startDate:string,
+    endDate:string
   } 
