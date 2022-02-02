@@ -4,12 +4,14 @@ import { RouteComponentProps } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import UserDataService from "../Services/UserService";
 import IUserData from "../types/User";
+import "./User.css";
 
 interface RouterProps { // type for `match.params`
   id: string; // must be type `string` since value comes from the URL
 }
 
 type Props = RouteComponentProps<RouterProps>;
+
 
 const User: React.FC<Props> = (props: Props) => {
   const initialUserState = {
@@ -89,7 +91,7 @@ const User: React.FC<Props> = (props: Props) => {
   console.log(currentUser.id)
   return (
    
-    <div>
+    <div className="User" >
       {currentUser ? (
         
         <div className="edit-form">

@@ -3,6 +3,7 @@ import UserDataService from "../Services/UserService";
 import IUserData from '../types/User';
 import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
+import './UserList.css';
 
 const UserList: React.FC = () => {
   const [users, setUsers] = useState<Array<IUserData>>([]);
@@ -55,7 +56,7 @@ const UserList: React.FC = () => {
   
 
   return (
-    <div className="list row">
+    <div className="userList">
       
       <div className="col-md-6">
         <h4>Registered Users....</h4>

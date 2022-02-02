@@ -1,6 +1,6 @@
 import { Component } from "react";
 import * as React from 'react';
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Avatar from '@mui/material/Avatar';
@@ -18,6 +18,8 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ILogin from '../types/login';
 import  { useState, ChangeEvent } from "react";
+import DashBoard from "../Components/DashBoard";
+import "../App.css";
 
 
 interface RouterProps {
@@ -47,7 +49,7 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export default class SignInSide extends Component<Props, State> {
+ class SignInSide extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
@@ -78,7 +80,8 @@ export default class SignInSide extends Component<Props, State> {
     AuthService.login(username, password).then(
       () => {
           //console.log(localStorage.getItem("user"));
-        this.props.history.push("/users");       
+        this.props.history.push("/"); 
+        <DashBoard/>      
         window.location.reload();
 
       },
@@ -106,6 +109,7 @@ export default class SignInSide extends Component<Props, State> {
     };
 
   return (
+    <div className="fill-window">
     <Formik
     initialValues={initialValues}
     validationSchema={this.validationSchema}
@@ -120,7 +124,7 @@ export default class SignInSide extends Component<Props, State> {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random)',
+            backgroundImage: '~/Login.png',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -150,7 +154,7 @@ export default class SignInSide extends Component<Props, State> {
                 <label htmlFor="username">Username</label>
                 <Field
                  margin="normal"
-                 required
+                 
                  fullWidth
                  label="Username"
                  autoComplete="username"
@@ -163,7 +167,7 @@ export default class SignInSide extends Component<Props, State> {
                 <label htmlFor="password">Password</label>
                 <Field
                  margin="normal"
-                 required
+                 
                  fullWidth
                  label="Password"
                 name="password" type="password" className="form-control" />
@@ -196,6 +200,8 @@ export default class SignInSide extends Component<Props, State> {
       </Grid>
     </ThemeProvider>
     </Formik>
+    </div>
   );
 }
 }
+export default withRouter(SignInSide);

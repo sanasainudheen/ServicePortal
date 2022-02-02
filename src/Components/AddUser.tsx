@@ -3,6 +3,9 @@ import {Link } from "react-router-dom";
 import UserDataService from "../Services/UserService";
 import IUserData from '../types/User';
 import Button from '@mui/material/Button';
+import './AddUser.css';
+import { useFormik ,ErrorMessage} from 'formik'
+import * as Yup from 'yup'
 
 const AddUser: React.FC = () => {
   const initialUserState = {
@@ -12,6 +15,31 @@ const AddUser: React.FC = () => {
     userName: "",
     password:""
   };
+  const initialValues = {
+    name:'',
+    emailId:'',
+    userName:'',
+    password:''
+  }
+  const validationSchema = Yup.object({
+              name: Yup.string()
+             .required("This field is required!")
+             .max(50),
+             emailId: Yup.string()
+              .required("This field is required!"),
+              userName: Yup.string()
+                .required("This field is required!")
+                .max(600),
+                password: Yup.string()
+            .required("This field is required!"),
+});
+  const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema: validationSchema,
+    onSubmit: values => {      
+     saveUser(values.name,values.emailId,values.userName,values.password)
+    },
+});
   const [user, setUser] = useState<IUserData>(initialUserState);
   const [submitted, setSubmitted] = useState<boolean>(false);
 
@@ -20,13 +48,13 @@ const AddUser: React.FC = () => {
     setUser({ ...user, [name]: value });
   };
 
-  const saveUser = () => {
+  const saveUser = (name:string,emailId:string,userName:string,password:string) => {
     
     var data = {
-        name: user.name,
-        emailId: user.emailId,
-        userName: user.userName,
-        password:user.password
+        name: name,
+        emailId: emailId,
+        userName: userName,
+        password:password
     };
 
     UserDataService.create(data)
@@ -41,8 +69,10 @@ const AddUser: React.FC = () => {
         setSubmitted(true);
         console.log(response.data);
       })
-      .catch((e: Error) => {
-        console.log(e);
+      .catch((error) => {
+       if(error.response.status==400){
+         alert(error.response.data);
+       }
       });
   };
 
@@ -52,7 +82,7 @@ const AddUser: React.FC = () => {
   };
 
   return (
-    <div className="submit-form" >
+    <div className="AddUser" >
       {submitted ? (
         <div>
           <h4>User has been created successfully!</h4>
@@ -66,7 +96,7 @@ const AddUser: React.FC = () => {
       ) : (
 
         <div>  
-               
+         <form onSubmit={formik.handleSubmit}>      
   <div className="form-row">
         <div className="form-group col-3" >
           <label htmlFor="name">Full Name</label>
@@ -74,11 +104,13 @@ const AddUser: React.FC = () => {
             type="text"
             className="form-control"
             id="name"
-            required
-            value={user.name}
-            onChange={handleInputChange}
+           
+            value={formik.values.name}
+            onChange={formik.handleChange}
             name="name"
           />
+          {formik.errors.name ? 
+      <div className="myDiv">{formik.errors.name}</div> : null}
         </div>
 
         <div className="form-group col-3">
@@ -87,11 +119,13 @@ const AddUser: React.FC = () => {
             type="text"
             className="form-control"
             id="emailId"
-            required
-            value={user.emailId}
-            onChange={handleInputChange}
+            
+            value={formik.values.emailId}
+            onChange={formik.handleChange}
             name="emailId"
           />
+          {formik.errors.emailId ? 
+      <div className="myDiv">{formik.errors.emailId}</div> : null}
         </div>
         </div>
         <div className="form-group col-3">
@@ -100,26 +134,30 @@ const AddUser: React.FC = () => {
             type="text"
             className="form-control"
             id="userName"
-            required
-            value={user.userName}
-            onChange={handleInputChange}
+            
+            value={formik.values.userName}
+            onChange={formik.handleChange}
             name="userName"
           />
+          {formik.errors.userName ? 
+      <div className="myDiv">{formik.errors.userName}</div> : null}
         </div>
         <div className="form-group col-3">
-          <label htmlFor="password">password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             className="form-control"
-            id="password"
-            required
-            value={user.password}
-            onChange={handleInputChange}
+            id="password"            
+            value={formik.values.password}
+            onChange={formik.handleChange}
             name="password"
           />
+           
+          {formik.errors.password ? 
+      <div className="myDiv">{formik.errors.password}</div> : null}
         </div>
         <Button type="submit"
-                 onClick={saveUser}
+                 
                  variant="contained"
                  sx={{ mt: 3, mb: 2 }}
                 className="btn btn-primary btn-block" >
@@ -128,7 +166,7 @@ const AddUser: React.FC = () => {
                 </Button>
           
           
-         
+         </form>
         </div>
         
       )}

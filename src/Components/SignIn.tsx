@@ -8,14 +8,15 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import AuthService from "../Services/auth.service";
-import { Component } from "react";
-import { RouteComponentProps } from "react-router-dom";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import AuthService from "../Services/auth.service";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { Component } from "react";
+import "../App.css";
 
 interface RouterProps {
   history: string;
@@ -29,6 +30,7 @@ type State = {
   loading: boolean,
   message: string
 };
+
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -44,71 +46,60 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export default class Login extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.handleLogin = this.handleLogin.bind(this);
-
-    this.state = {
-      username: "",
-      password: "",
-      loading: false,
-      message: ""
-    };
-  }
-
-  validationSchema() {
-    return Yup.object().shape({
-      username: Yup.string().required("This field is required!"),
-      password: Yup.string().required("This field is required!"),
-    });
-  }
-  handleLogin(formValue: { username: string; password: string }) {
-    const { username, password } = formValue;
-
-    this.setState({
-      message: "",
-      loading: true
-    });
-
-
-    AuthService.login(username, password).then(
-      () => {
-          //console.log(localStorage.getItem("user"));
-        this.props.history.push("/users");       
-        window.location.reload();
-
-      },
-      error => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        this.setState({
-          loading: false,
-          message: "Invalid Credentials"
-        });
+const SignIn:React.FC<Props>=(props)=> {
+  const initialValues = {
+   userName:'',
+   password:''
+ }
+   const validationSchema = Yup.object({
+    userName: Yup.string()
+   .required("This field is required!")
+   .max(50),
+   password: Yup.string()
+    .required("This field is required!"),   
+});
+   const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema:validationSchema,
+    onSubmit: values => {      
+      handleLogin(values.userName,values.password)
+     },
+});
+const handleLogin=(userName:string,password:string)=> { 
+  AuthService.login(userName, password).then(response => {
+      if (response.data.accessToken) {
+       
+        props.history.push("/");  
+       // window.location.reload();  
       }
-    );
-  }
+    })
+    .catch((error) => {
+      const resMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
 
-  render() {
-    const { loading, message } = this.state;
-
-    const initialValues = {
-      username: "",
-      password: "",
-    };
-
+        if(error.response.status==400){
+          alert("Invalid Credentials");
+        }
+    }
+  );
+}
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    // eslint-disable-next-line no-console
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+  };
+ 
   return (
-    <Formik
-    initialValues={initialValues}
-    validationSchema={this.validationSchema}
-    onSubmit={this.handleLogin}
-  >
+    <div className="fill-window">
+    
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -121,62 +112,59 @@ export default class Login extends Component<Props, State> {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            
+           
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <div className="form-group">
-          <label htmlFor="Username">Username</label>
-                <Field
-                 margin="normal"
-                 required
-                 fullWidth
-                 label="Username"
-                 autoComplete="username"
-                 autoFocus
-                name="username" type="text" className="form-control" />
-               
-              </div>
-           
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <Field
-                 margin="normal"
-                 required
-                 fullWidth
-                 label="Password"
-                name="password" type="password" className="form-control" />
-               
-              </div>
+          <Box component="form"  noValidate sx={{ mt: 1 }}>
+         
+          <form onSubmit={formik.handleSubmit}>
+            <TextField
+              margin="normal"              
+              fullWidth
+              id="userName"
+              label="User Name"
+              name="userName"
+              autoComplete="userName"
+              autoFocus
+              onChange={formik.handleChange}
+              value={formik.values.userName}
+            />
+            {formik.errors.userName ? 
+      <div>{formik.errors.userName}</div> : null}
+            <TextField
+              margin="normal"            
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={formik.handleChange}
+              value={formik.values.password}
+            />
+           {formik.errors.password ? 
+      <div>{formik.errors.password}</div> : null}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
             
+            </form>
            
-              <div className="form-group">
-                <Button type="submit"
-                 fullWidth
-                 variant="contained"
-                 sx={{ mt: 3, mb: 2 }}
-                className="btn btn-primary btn-block" disabled={loading}>
-                  {loading && (
-                    <span className="spinner-border spinner-border-sm"></span>
-                  )}
-                  <span>Login</span>
-                </Button>
-              </div>
-
-              {message && (
-                <div className="form-group">
-                  <div className="alert alert-danger" role="alert">
-                    {message}
-                  </div>
-                </div>
-              )}
-          
+          </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
-    </Formik>
+   
+    </div>
   );
 }
-}
+
+ export default withRouter(SignIn);

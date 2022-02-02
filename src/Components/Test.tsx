@@ -11,11 +11,10 @@ import IServiceRequestData from '../types/ServiceRequest';
 import moment from 'moment';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Dropdown from 'react-bootstrap';
-import './AddUser.css';
 
 const minDate=new Date();
 
-const AddRequest = () => {
+const Test = () => {
     const initialRequestState = {
         userId:null,
         categoryId:null,
@@ -93,7 +92,7 @@ console.log(data);
       });
   };
  return (
-     <div className="AddUser">
+     <div>
 
        
 <form>
@@ -128,18 +127,6 @@ console.log(data);
 
   <div className="row">
     <div className="col-md-4">
-    <label htmlFor="service">Select a Service</label>
-   
-   <select className="form-control" value={selServiceValue} onChange={e=>setSelServiceValue(e.currentTarget.value)}>
-   {
-       services.map(({id,serviceName})=>(
-           <option
-           key={id} value={id}>{serviceName}</option>
-       ))
-   }
-   </select>
-    </div>
-    <div className="col-md-4">
     <label htmlFor="pmode">Select a Mode Of Pay</label>
 
 <select className="form-control" value={selPayModeValue} onChange={e=>setSelPayModeValue(e.currentTarget.value)} >
@@ -147,23 +134,12 @@ console.log(data);
     <option value="2">Credit Card</option>
 </select>
     </div>
-  </div>
-
-  <form>
-  <div className="row">
     <div className="col-md-4">
-    <label htmlFor="sdate">Choose the start date</label>
-
-<DatePicker selected={startDate} dateFormat='dd/MMM/yyyy'
-      onChange={date=>setStartDate(date)}  minDate={minDate}/>
-    </div>
-    <div className="col-md-4">
-    <label htmlFor="edate">Choose the end date</label>
- <DatePicker selected={endDate}  minDate={minDate}
-      onChange={date=>setEndDate(date)} dateFormat='dd/MMM/yyyy'/>
+   
     </div>
   </div>
-</form>
+
+  
 </form>
 
  <div>
@@ -183,4 +159,4 @@ console.log(data);
   );
 }
 
-export default AddRequest
+export default Test
