@@ -52,12 +52,7 @@ export default function Sidebar() {
                 Request a Service
               </li>
               </Link>
-              <Link to="/UploadFile" className="link">
-              <li className="sidebarListItem">
-                <PermIdentity className="sidebarIcon" />
-                Upload File
-              </li>
-              </Link>
+             
               <Link to="/SignOut" className="link">
               <li className="sidebarListItem">
                 <PermIdentity className="sidebarIcon" />
