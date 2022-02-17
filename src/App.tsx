@@ -7,7 +7,7 @@ import UserList from "./Components/UserList";
 import SignIn from "./Components/SignIn";
 import SignOut from "./Components/SignOut";
 import SignInSide from "./Components/SignInSide";
-import { Component } from "react";
+import { Component,useMemo } from "react";
 import AuthService from "./Services/auth.service";
 import IUserData from './types/User';
 import Login from "./Components/login.component";
@@ -38,7 +38,8 @@ import NewProduct from "./pages/newProduct/NewProduct";
 //}
 
 //class App extends Component<Props, State> {
-  class App extends Component{
+  export default function App() {
+   
  // constructor(props: Props) {
   //  super(props);
   //  this.logOut = this.logOut.bind(this);
@@ -69,7 +70,7 @@ import NewProduct from "./pages/newProduct/NewProduct";
  //   });
  // }
 
-  render() {
+  //render() {
     //const { currentUser} = this.state;
 //console.log(localStorage.getItem("user"));
 
@@ -86,7 +87,7 @@ import NewProduct from "./pages/newProduct/NewProduct";
     </div>
   );
 }
-}
-export default App;
+//}
+
 
 

@@ -52,6 +52,12 @@ export default function Sidebar() {
                 Request a Service
               </li>
               </Link>
+              <Link to="/RequestList" className="link">
+              <li className="sidebarListItem">
+                <PermIdentity className="sidebarIcon" />
+                Service Requests
+              </li>
+              </Link>
              
               <Link to="/SignOut" className="link">
               <li className="sidebarListItem">

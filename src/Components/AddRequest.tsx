@@ -83,14 +83,14 @@ const saveRequest = () => {
         endDate:moment(endDate).format('DD/MM/YYYY')
     };
 console.log(data);
-    UserDataService.AddServiceRequest(data)
-      .then((response: any) => {
-        setMessage("Request has been added successfully!");
+ //   UserDataService.AddServiceRequest(data)
+  //    .then((response: any) => {
+  //      setMessage("Request has been added successfully!");
     
-      })
-      .catch((e: Error) => {
-        console.log('error:');
-      });
+  //    })
+  //    .catch((e: Error) => {
+  //      console.log('error:');
+  //    });
   };
  return (
      <div className="AddUser">

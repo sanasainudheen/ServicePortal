@@ -12,9 +12,10 @@ import AuthService from "../Services/auth.service";
 import IUserData from '../types/User';
 import Login from "../Components/login.component";
 import EventBus from "../Common/EventBus";
-import ServiceRequest from "../Components/ServiceRequest";
+
 import RequestList from "../Components/RequestList";
 import AddRequest from "../Components/AddRequest";
+import AddServiceRequest from "../Components/AddServiceRequest";
 import Test from "../Components/Test";
 import UploadFiles from "../Components/upload-files.component";
 import NewUser from "../pages/newUser/NewUser";
@@ -23,7 +24,7 @@ import Product from "../pages/product/Product";
 import NewProduct from "../pages/newProduct/NewProduct";
 import Sidebar from "../Components/sidebar/Sidebar";
 import Topbar from "../Components/topbar/Topbar";
-
+import EditOrder from "../Components/EditOrder";
 import Home from "../pages/home/Home";
 
 const DashBoard = () => {
@@ -49,7 +50,7 @@ const DashBoard = () => {
        
         </Route>
         <Route path="/ServiceRequest">
-      <AddRequest/>
+      <AddServiceRequest/>
         </Route>
         <Route path="/newUser">
           <NewUser />
@@ -66,9 +67,11 @@ const DashBoard = () => {
         <Route exact path="/SignIn">
           <SignInSide />
         </Route>
-        <Route exact path="/UploadFile">
-          <UploadFiles />
-        </Route>
+        <Route exact path="/RequestList">
+          <RequestList />
+        </Route>       
+        <Route path="/EditOrder/:id" component={EditOrder} />
+        
         <Route path="/SignOut">
           <SignOut />
         </Route>      

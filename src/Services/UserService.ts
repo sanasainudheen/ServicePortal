@@ -5,6 +5,9 @@ import IUserData from "../types/User";
 import IUserRequestData from "../types/userRequest";
 import IReqDynamicData from "../types/ReqDynamicData";
 import IServiceRequestData from "../types/ServiceRequest";
+import INewServiceData from "../types/NewServiceData";
+import IOrderData from "../types/Order";
+import ISubRequestData from "../types/SubRequests";
 
 
 const getAll = () => {
@@ -35,9 +38,12 @@ const createRequest = (data: IUserRequestData) => {
   return http.post<IUserRequestData>("/ServiceRequest", data);
 };
 
-const AddServiceRequest = (data: IServiceRequestData) => {
-  return http.post<IServiceRequestData>("/ServiceRequest", data);
+const AddServiceRequest = (data: INewServiceData) => {
+ // console.log(data);
+  return http.post<INewServiceData>("/ServiceRequest", data);
 };
+
+
 
 const update = (id: any, data: IUserData) => {
   return http.put<any>(`/users/${id}`, data);
